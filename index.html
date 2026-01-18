@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Management Calculator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: rgb(243, 246, 249);
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: auto;
+            background: white;
+            padding: 18px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            text-align: center;
+            color: rgb(27, 94, 32);
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: rgb(27, 94, 32);
+            font-size: 16px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgb(17, 24, 39);
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid rgb(209, 213, 219);
+            outline: none;
+        }
+
+        input:focus {
+            border-color: rgb(46, 125, 50);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
+            background: rgb(46, 125, 50);
+            color: white;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .copy-btn {
+            background: rgb(30, 64, 175);
+            margin-top: 12px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 14px;
+            background: rgb(236, 253, 245);
+            border-radius: 12px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 15px;
+            border-bottom: 1px dashed rgb(199, 232, 209);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: rgb(107, 114, 128);
+        }
+
+        .value {
+            font-weight: 700;
+            color: rgb(6, 95, 70);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📊 Risk Management</h2>
+
+    <label>Stock Name (Optional)</label>
+    <input type="text" id="stock">
+
+    <label>Total Capital (₹)</label>
+    <input type="number" id="capital" value="10000" required>
+
+    <label>Max Allowed Risk (%)</label>
+    <input type="number" id="riskPercent" value="1" required>
+
+    <label>Entry Price (₹)</label>
+    <input type="number" id="entry" required>
+
+    <label>Stop Loss (₹)</label>
+    <input type="number" id="sl" required>
+
+    <label>Target (₹)</label>
+    <input type="number" id="target" required>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="output" style="display:none;"></div>
+
+    <button class="copy-btn" id="copyBtn" style="display:none;" onclick="copyToClipboard()">
+        📋 Copy Trade Details
+    </button>
+
+</div>
+
+<script>
+let copyText = "";
+
+function calculate() {
+
+    const stock = document.getElementById("stock").value || "N/A";
+    const capital = Number(document.getElementById("capital").value);
+    const riskPercent = Number(document.getElementById("riskPercent").value);
+    const entry = Number(document.getElementById("entry").value);
+    const sl = Number(document.getElementById("sl").value);
+    const target = Number(document.getElementById("target").value);
+
+    if (!capital || !riskPercent || !entry || !sl || !target) {
+        alert("Please fill all required fields.");
+        return;
+    }
+
+    const riskPerShare = Math.abs(entry - sl);
+    const tradeRiskPercent = (riskPerShare / entry) * 100;
+    const riskCapacity = capital * (riskPercent / 100);
+    const maxCapitalAllowed = capital / 3;
+
+    const qtyRiskRule = riskCapacity / riskPerShare;
+    const qtyCapitalRule = maxCapitalAllowed / entry;
+
+    const quantity = Math.floor(Math.min(qtyRiskRule, qtyCapitalRule));
+
+    const expectedProfit = quantity * (target - entry);
+    const maxTradeAmount = quantity * entry;
+
+    const output = document.getElementById("output");
+    output.style.display = "block";
+
+    output.innerHTML = `
+        <h3>Trade Inputs</h3>
+        <div class="result-item"><span class="label">Stock</span><span class="value">${stock}</span></div>
+        <div class="result-item"><span class="label">Capital</span><span class="value">₹${capital}</span></div>
+        <div class="result-item"><span class="label">Risk %</span><span class="value">${riskPercent}%</span></div>
+        <div class="result-item"><span class="label">Entry</span><span class="value">₹${entry}</span></div>
+        <div class="result-item"><span class="label">Stop Loss</span><span class="value">₹${sl}</span></div>
+        <div class="result-item"><span class="label">Target</span><span class="value">₹${target}</span></div>
+
+        <h3>Calculated Results</h3>
+        <div class="result-item">
+            <span class="label">Trade Risk (%)</span>
+            <span class="value" style="color: red;">${tradeRiskPercent.toFixed(2)}%</span>
+        </div>
+        <div class="result-item"><span class="label">Risk Capacity</span><span class="value">₹${riskCapacity.toFixed(0)}</span></div>
+        <div class="result-item"><span class="label">Max Capital Allowed</span><span class="value">₹${maxCapitalAllowed.toFixed(0)}</span></div>
+        <div class="result-item"><span class="label">Quantity</span><span class="value">${quantity}</span></div>
+        <div class="result-item"><span class="label">Trade Amount</span><span class="value">₹${maxTradeAmount.toFixed(0)}</span></div>
+        <div class="result-item"><span class="label">Expected Profit</span><span class="value">₹${expectedProfit.toFixed(0)}</span></div>
+    `;
+
+    copyText = `
+Stock: ${stock}
+Capital: ₹${capital}
+Risk %: ${riskPercent}%
+
+Entry: ₹${entry}
+Stop Loss: ₹${sl}
+Target: ₹${target}
+
+Trade Risk: ${tradeRiskPercent.toFixed(2)}%
+Quantity: ${quantity}
+Trade Amount: ₹${maxTradeAmount.toFixed(0)}
+Expected Profit: ₹${expectedProfit.toFixed(0)}
+    `.trim();
+
+    document.getElementById("copyBtn").style.display = "block";
+}
+
+function copyToClipboard() {
+    navigator.clipboard.writeText(copyText);
+    alert("Trade details copied to clipboard!");
+}
+</script>
+
+</body>
+</html>
