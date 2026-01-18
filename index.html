@@ -7,108 +7,137 @@
 
     <style>
         * {
-            box-sizing: border-box;
-        }
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: rgb(243, 246, 249);
-            padding: 16px;
-        }
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: rgb(243, 246, 249);
+    padding: 14px;
+}
 
-        .container {
-            max-width: 480px;
-            margin: auto;
-            background: white;
-            padding: 18px;
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        }
+/* Main Card */
+.container {
+    max-width: 480px;
+    margin: auto;
+    background: white;
+    padding: 20px 18px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
 
-        h2 {
-            text-align: center;
-            color: rgb(27, 94, 32);
-            margin-bottom: 18px;
-        }
+/* Headings */
+h2 {
+    text-align: center;
+    color: rgb(27, 94, 32);
+    margin-bottom: 20px;
+    font-size: 22px;
+}
 
-        h3 {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: rgb(27, 94, 32);
-            font-size: 16px;
-        }
+h3 {
+    margin-top: 22px;
+    margin-bottom: 10px;
+    color: rgb(27, 94, 32);
+    font-size: 15px;
+    border-left: 4px solid rgb(46, 125, 50);
+    padding-left: 8px;
+}
 
-        label {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgb(17, 24, 39);
-        }
+/* Labels & Inputs */
+label {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgb(17, 24, 39);
+}
 
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-top: 6px;
-            margin-bottom: 14px;
-            font-size: 16px;
-            border-radius: 10px;
-            border: 1px solid rgb(209, 213, 219);
-            outline: none;
-        }
+input {
+    width: 100%;
+    padding: 14px 14px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid rgb(209, 213, 219);
+    background: rgb(249, 250, 251);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-        input:focus {
-            border-color: rgb(46, 125, 50);
-        }
+input:focus {
+    border-color: rgb(46, 125, 50);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
 
-        button {
-            width: 100%;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 12px;
-            border: none;
-            background: rgb(46, 125, 50);
-            color: white;
-            cursor: pointer;
-            margin-top: 6px;
-        }
+/* Primary Button */
+button {
+    width: 100%;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 14px;
+    border: none;
+    background: rgb(46, 125, 50);
+    color: white;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
 
-        button:active {
-            transform: scale(0.98);
-        }
+button:active {
+    transform: scale(0.97);
+}
 
-        .copy-btn {
-            background: rgb(30, 64, 175);
-            margin-top: 12px;
-        }
+/* Copy Button */
+.copy-btn {
+    background: rgb(30, 64, 175);
+    margin-top: 14px;
+}
 
-        .result {
-            margin-top: 20px;
-            padding: 14px;
-            background: rgb(236, 253, 245);
-            border-radius: 12px;
-        }
+/* Result Card */
+.result {
+    margin-top: 22px;
+    padding: 14px 16px;
+    background: rgb(236, 253, 245);
+    border-radius: 14px;
+}
 
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 15px;
-            border-bottom: 1px dashed rgb(199, 232, 209);
-        }
+/* Result Rows */
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed rgb(199, 232, 209);
+}
 
-        .result-item:last-child {
-            border-bottom: none;
-        }
+.result-item:last-child {
+    border-bottom: none;
+}
 
-        .label {
-            color: rgb(107, 114, 128);
-        }
+/* Text Styling */
+.label {
+    color: rgb(107, 114, 128);
+    font-weight: 500;
+}
 
-        .value {
-            font-weight: 700;
-            color: rgb(6, 95, 70);
-        }
+.value {
+    font-weight: 700;
+    color: rgb(6, 95, 70);
+}
+
+/* Improve readability on very small screens */
+@media (max-width: 360px) {
+    h2 {
+        font-size: 20px;
+    }
+
+    input, button {
+        font-size: 15px;
+    }
+}
+
     </style>
 </head>
 
@@ -133,8 +162,14 @@
     <label>Stop Loss (₹)</label>
     <input type="number" id="sl" required>
 
-    <label>Target (₹)</label>
-    <input type="number" id="target" required>
+    <label>Target 1 (₹)</label>
+    <input type="number" id="target1" required>
+
+    <label>Target 2 (₹)</label>
+    <input type="number" id="target2" required>
+
+    <label>Target 3 (₹)</label>
+    <input type="number" id="target3" required>
 
     <button onclick="calculate()">Calculate</button>
 
@@ -156,9 +191,11 @@ function calculate() {
     const riskPercent = Number(document.getElementById("riskPercent").value);
     const entry = Number(document.getElementById("entry").value);
     const sl = Number(document.getElementById("sl").value);
-    const target = Number(document.getElementById("target").value);
+    const target1 = Number(document.getElementById("target1").value);
+    const target2 = Number(document.getElementById("target2").value);
+    const target3 = Number(document.getElementById("target3").value);
 
-    if (!capital || !riskPercent || !entry || !sl || !target) {
+    if (!capital || !riskPercent || !entry || !sl || !target1 || !target2 || !target3) {
         alert("Please fill all required fields.");
         return;
     }
@@ -173,7 +210,7 @@ function calculate() {
 
     const quantity = Math.floor(Math.min(qtyRiskRule, qtyCapitalRule));
 
-    const expectedProfit = quantity * (target - entry);
+    const expectedProfit = quantity * (target1 - entry);
     const maxTradeAmount = quantity * entry;
 
     const output = document.getElementById("output");
@@ -186,8 +223,9 @@ function calculate() {
         <div class="result-item"><span class="label">Risk %</span><span class="value">${riskPercent}%</span></div>
         <div class="result-item"><span class="label">Entry</span><span class="value">₹${entry}</span></div>
         <div class="result-item"><span class="label">Stop Loss</span><span class="value">₹${sl}</span></div>
-        <div class="result-item"><span class="label">Target</span><span class="value">₹${target}</span></div>
-
+        <div class="result-item"><span class="label">Target 1</span><span class="value">₹${target1}</span></div>
+        <div class="result-item"><span class="label">Target 2</span><span class="value">₹${target2}</span></div>
+        <div class="result-item"><span class="label">Target 3</span><span class="value">₹${target3}</span></div>
         <h3>Calculated Results</h3>
         <div class="result-item">
             <span class="label">Trade Risk (%)</span>
@@ -203,11 +241,13 @@ function calculate() {
     copyText = `
 Stock: ${stock}
 Capital: ₹${capital}
-Risk %: ${riskPercent}%
+Risk: ${riskPercent}%
 
 Entry: ₹${entry}
 Stop Loss: ₹${sl}
-Target: ₹${target}
+Target 1: ₹${target1}
+Target 2: ₹${target2}
+Target 3: ₹${target3}
 
 Trade Risk: ${tradeRiskPercent.toFixed(2)}%
 Quantity: ${quantity}
@@ -218,10 +258,10 @@ Expected Profit: ₹${expectedProfit.toFixed(0)}
     document.getElementById("copyBtn").style.display = "block";
 }
 
-function copyToClipboard() {
-    navigator.clipboard.writeText(copyText);
-    alert("Trade details copied to clipboard!");
-}
+    function copyToClipboard() {
+        navigator.clipboard.writeText(copyText);
+        alert("Trade details copied to clipboard!");
+    }
 </script>
 
 </body>
